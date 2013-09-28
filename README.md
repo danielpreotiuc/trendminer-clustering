@@ -26,9 +26,11 @@ no.clusters - number of clusters
 	
 	./run.sh sep5 1 0.1 30 30
 
-sep5 - sample tweets file processed for language and tokenized using the Trendminer pipeline. Fields are restricted to only text due for privacy. It largely consists of tweets written on 5 September 2013 in Austria and relating to politics.
+sep5 - sample tweets file processed for language and tokenized using the Trendminer pipeline. Fields are restricted to only text due for privacy. It largely consists of tweets written on 5 September 2013 in Austria, filtered for german and relating to politics.
 
 ## Scripts
+
+This is a description of each script. They are all needed to be ran in the order given by the run.sh script but can also be useful individually.
 
 #### dedup.py
 
@@ -62,8 +64,7 @@ Performs word count on the tokens that exist in the vocabulary file. Written in 
 
 #### pmi-map-ml.sh
 
-        cat file | python pmi-mal-ml.sh dict.file | sort | python wc-red.sh > w
-co.file
+        cat file | python pmi-mal-ml.sh dict.file | sort | python wc-red.sh > wco.file
 
 Performs word co-occurrence count on the tokens that exist in the vocabulary file. Written in MapReduce style. Output pairs are ordered alphabetically.
 
@@ -93,6 +94,6 @@ Performs spectral clustering using the tweet file, npmi file, dictionary.  K and
 
 Outputs the Matlab variables in the file vars.file-no.clusters and another file cl.file-no.clusters. This file has the format (word clusterid centrality) for each word, one word/line.
 
-For spectral clustering is currently using the code from the [AFFECT Matlab Toolbox] (http://tbayes.eecs.umich.edu/xukevin/affect). Their code is included in this project in the affect folder.
+Spectral clustering is currently perfomed using the code from the [AFFECT Matlab Toolbox] (http://tbayes.eecs.umich.edu/xukevin/affect). Their code is included in this project in the affect folder.
 
 
