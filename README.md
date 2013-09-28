@@ -2,20 +2,24 @@
 
 ## Description
 
-Spectral clustering work done for D3.2.1 of the [Trendminer project] (http://www.trendminer-project.eu/). This builds hard clusters from co-occurrence counts of tweets. More information about the algorithm is available in the [deliverable] (http://www.trendminer-project.eu/)
+Spectral clustering work done for D3.2.1 of the [Trendminer project] (http://www.trendminer-project.eu/). This builds hard clusters of words that co-occur in the same tweets. More information about the algorithm is available in the [deliverable] (http://www.trendminer-project.eu/).
 
 ## Installation
 
-The code is available as a collection of python and Matlab scripts. You need to have both installed. The script that performs the entire sequence of operations is written in shell and tested under Ubuntu.
+The code is available as a collection of Python and Matlab scripts. You need to have both installed. The script that performs the entire sequence of operations is written in shell and tested under Ubuntu.
 
 ## Quick start
 
 	./run file voc.threshold npmi.threshold k no.clusters
 
 file - input file of tweets. One tweet in Json format per line.  This must be preprocessed using the [Trendminer Preprocessing pipeline] (https://github.com/sinjax/trendminer-java), needing tokenisation.
+
 voc.threshold - vocabulary cut-off
+
 npmi.threshold - NPMI cut-off
+
 k - k of the mutual K nearest-neighbour graph for spectral clustering
+
 no.clusters - number of clusters 
 
 Example:
