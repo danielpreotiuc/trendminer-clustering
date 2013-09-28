@@ -22,7 +22,7 @@ k - k of the mutual K nearest-neighbour graph for spectral clustering
 
 no.clusters - number of clusters 
 
-Example:
+**Example:**
 	
 	./run.sh sep5 1 0.1 30 30
 
