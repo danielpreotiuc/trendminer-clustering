@@ -11,7 +11,7 @@
 echo 'Step 1: Processing data - tokenization, language detection and filtering'
 java -jar ~/TrendminerTool-uber.jar -i $1 -o $1-tok-lid-$2 -m TOKENISE -m LANG_ID -pof LANG --accept-language $2 -ot TWITTER 
 echo 'Step 2: Deduplication of tweets'
-cat $1-tok-lid-$2 | python bloom-dedup-tok.py > $1-tok-lid-$2-dedup
+cat $1-tok-lid-$2 | python dedup.py > $1-tok-lid-$2-dedup
 echo 'Step 3: Computing word counts'
 cat $1-tok-lid-$2-dedup | python wc-map.sh | sort | python wc-red.sh > wc.$1-tok-lid-$2-dedup
 echo 'Step 4: Creating dictionary'
