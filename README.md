@@ -36,15 +36,15 @@ To run, start it using:
 
 Then use curl to interact with the service. There are 3 endpoints, all returning JSON objects:
 
-#### GET /cluster?c=cid&t=tno
+#### GET /cluster?c=cid&t=topw
 
-returns the cluster with cid as its label and the top now words and their importance for the topic.
+returns the cluster with cid as its label and the top topw words and their importance for the topic.
 
 #### GET /words?w=word
 
 returns the id of the cluster where the word belongs.
 
-#### POST /topics?t=not
+#### POST /topics?t=notop
 
 receives a tweet file, 1 json/line and returns the top notop topics in the file and their importance score.
 
