@@ -28,6 +28,32 @@ no.clusters - number of clusters
 
 sep5 - sample tweets file processed for language and tokenized using the Trendminer pipeline. Fields are restricted to only text due for privacy. It largely consists of tweets written on 5 September 2013 in Austria, filtered for german and relating to politics.
 
+## Webservice
+
+To run, start it using:
+
+	 python wsscl.py
+
+Then use curl to interact with the service. There are 3 endpoints, all returning JSON objects:
+
+#### GET /cluster?c=cid&t=tno
+
+returns the cluster with cid, its label and the top tno words and centrality score in that topic.
+
+#### GET /words?w=word
+
+returns the id of the cluster for the word.
+
+#### POST /topics?t=not
+
+gets a one tweet/line json and outputs the top not important topics and their weight
+
+**Examples:**	
+
+	curl -X GET  http://localhost:8080/cluster?c=199\&t=5
+	
+	cat sora-13mar13r | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8080/topics?t=5
+
 ## Scripts
 
 This is a description of each script. They are all needed to be ran in the order given by the run.sh script but can also be useful individually.
