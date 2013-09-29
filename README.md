@@ -32,27 +32,27 @@ sep5 - sample tweets file processed for language and tokenized using the Trendmi
 
 To run, start it using:
 
-	 python wsscl.py
+	 python wsscl.py 
 
 Then use curl to interact with the service. There are 3 endpoints, all returning JSON objects:
 
 #### GET /cluster?c=cid&t=tno
 
-returns the cluster with cid, its label and the top tno words and centrality score in that topic.
+returns the cluster with cid as its label and the top now words and their importance for the topic.
 
 #### GET /words?w=word
 
-returns the id of the cluster for the word.
+returns the id of the cluster where the word belongs.
 
 #### POST /topics?t=not
 
-gets a one tweet/line json and outputs the top not important topics and their weight
+receives a tweet file, 1 json/line and returns the top notop topics in the file and their importance score.
 
 **Examples:**	
 
 	curl -X GET  http://localhost:8080/cluster?c=199\&t=5
 	
-	cat sora-13mar13r | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8080/topics?t=5
+	cat mar13 | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8080/topics?t=5
 
 ## Scripts
 
