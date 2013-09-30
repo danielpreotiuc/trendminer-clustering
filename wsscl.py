@@ -1,5 +1,5 @@
+import sys
 import cherrypy
-import simplejson
 import json
 import pickle
 from collections import Counter
@@ -11,17 +11,21 @@ class Topics:
 
   def __init__(self):
     self.stopw=pickle.load(open("stopwords.p","rb"))
-    self.loadwords()
+    self.loadwords(fcl)
 
-  def loadwords(self, cluster_file='cl-sora-200w-ncen'):
+  def loadwords(self, cluster_file="cl"):
     f=open(cluster_file,'r')
     wo={};
     sc={};
+    mcl=0
     for line in f:
       l=line.strip().split()
       wo[l[0]]=int(l[1])
       sc[l[0]]=float(l[2])
+      if int(l[1])>mcl:
+        mcl=int(l[1])
     f.close()
+    self.maxcl=mcl+1
     self.words=wo
     self.scores=sc
 
@@ -30,7 +34,7 @@ class Topics:
     cl=cherrypy.request.headers['Content-Length']
     raw_body=cherrypy.request.body.read(int(cl))
     lines=raw_body.splitlines()
-    s=np.zeros(shape=(201,1))
+    s=np.zeros(shape=(self.maxcl,1))
     for line in lines:
       try:
         tweet=json.loads(line)
@@ -55,29 +59,21 @@ class Topics:
           except:
             pass
       if noc>0:
-#        s=np.zeros(shape=(201,1))
         for i in lst:
           s[self.words[i]]=s[self.words[i]]+self.scores[i]
-#        scfin=max(s)/math.sqrt(notok)
-#        cid=np.where(scfin==max(scfin))[0][0]
-#        ts[cid]=ts[cid]+1
     sf=s/sum(s)
     ts={}
     for i in sorted(range(len(sf)), key=lambda i: sf[i], reverse=True)[:int(t)]:
       ts[i]=sf[i][0]
-#      if int(ss[i][0])<10:
-#        s1[i]=float(s[i][0])
-#      for i in range(1,10):
-#        s1[ss[i][0]]=int(s[ss[i]])
     return ts
 
 class Cluster:
-  def __init__(self, cluster_file = "cl-sora-200w-ncen"):
-    self.loadcl(cluster_file)
-    self.loadlab(cluster_file)
+  def __init__(self):
+    self.loadcl(fcl)
+    self.loadlab(flab)
 
-  def loadcl(self, cluster_file):
-    f=open('cl-sora-200w-ncen','r') 
+  def loadcl(self,cluster_file="cl"):
+    f=open(cluster_file,'r') 
     cl=[];
     for line in f:
       l=line.strip().split()
@@ -85,8 +81,8 @@ class Cluster:
     f.close()
     self.cluster=cl
 
-  def loadlab(self, labels_file):
-    f=open('cl-sora-200-labels','r')
+  def loadlab(self, labels_file="cl.lab"):
+    f=open(labels_file,'r')
     lab={};
     k=1
     for line in f:
@@ -112,11 +108,11 @@ class Cluster:
     return top
 
 class Words:
-  def  __init__(self, cluster_file = "cl-sora-200w-ncen"):
-    self.loadwords(cluster_file)
+  def  __init__(self,):
+    self.loadwords(fcl)
 
-  def loadwords(self, cluster_file):
-    f=open('cl-sora-200w-ncen','r')
+  def loadwords(self, cluster_file="cl"):
+    f=open(cluster_file,'r')
     wo={};
     for line in f:
       l=line.strip().split()
@@ -134,6 +130,8 @@ class Words:
       return 
         
 if __name__=='__main__':
+  fcl=sys.argv[1]
+  flab=sys.argv[2]
   cherrypy.tree.mount(Topics(), '/topics',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
   cherrypy.tree.mount(Cluster(), '/cluster',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
   cherrypy.tree.mount(Words(), '/words',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })

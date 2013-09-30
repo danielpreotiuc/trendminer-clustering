@@ -30,9 +30,15 @@ sep5 - sample tweets file processed for language and tokenized using the Trendmi
 
 ## Webservice
 
-To run, start it using:
+To run, start first the webservice script:
 
-	 python wsscl.py 
+#### wsscl.py cluster.file cluster.label.file
+
+cluster.file is the file with the cluster asssignments in the format (word clusterid importance) , same as the output of the run script.
+
+cluster.label.file is a file with the cluster labels given as one label/line
+
+Defaults are cl and cl.lab
 
 Then use curl to interact with the service. There are 3 endpoints, all returning JSON objects:
 
@@ -49,6 +55,8 @@ returns the id of the cluster where the word belongs.
 receives a tweet file, 1 json/line and returns the top notop topics in the file and their importance score.
 
 **Examples:**	
+
+	python wsscl.py cl-sora-200w-ncen cl-sora-200-labels
 
 	curl -X GET  http://localhost:8080/cluster?c=199\&t=5
 	
