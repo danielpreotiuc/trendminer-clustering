@@ -13,7 +13,7 @@ class Topics:
     self.stopw=pickle.load(open("stopwords.p","rb"))
     self.loadwords(fcl)
 
-  def loadwords(self, cluster_file="cl"):
+  def loadwords(self, cluster_file):
     f=open(cluster_file,'r')
     wo={};
     sc={};
@@ -72,7 +72,7 @@ class Cluster:
     self.loadcl(fcl)
     self.loadlab(flab)
 
-  def loadcl(self,cluster_file="cl"):
+  def loadcl(self,cluster_file):
     f=open(cluster_file,'r') 
     cl=[];
     for line in f:
@@ -111,7 +111,7 @@ class Words:
   def  __init__(self,):
     self.loadwords(fcl)
 
-  def loadwords(self, cluster_file="cl"):
+  def loadwords(self, cluster_file):
     f=open(cluster_file,'r')
     wo={};
     for line in f:
@@ -130,11 +130,21 @@ class Words:
       return 
         
 if __name__=='__main__':
-  fcl=sys.argv[1]
-  flab=sys.argv[2]
+  if len(sys.argv)==1:
+    fcl="cl"
+    flab="cl.lab"
+  elif len(sys.argv)==2:
+    fcl=sys.argv[1]
+    flab=sys.argv[1]+".lab"
+  elif len(sys.argv)==3:
+    fcl=sys.argv[1]
+    flab=sys.argv[2]
+  else:
+    exit()
   cherrypy.tree.mount(Topics(), '/topics',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
   cherrypy.tree.mount(Cluster(), '/cluster',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
   cherrypy.tree.mount(Words(), '/words',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
+  cherrypy.config.update({'server.socket_port': 8099})
   cherrypy.engine.start()
   cherrypy.engine.block()
 

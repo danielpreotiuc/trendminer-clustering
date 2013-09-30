@@ -30,17 +30,15 @@ sep5 - sample tweets file processed for language and tokenized using the Trendmi
 
 ## Webservice
 
+You must have [Cherrypy installed] (http://www.cherrypy.org/)
+
 To run, start first the webservice script:
 
 	python wsscl.py cluster.file cluster.label.file
 
-cluster.file is the file with the cluster asssignments in the format (word clusterid importance) , same as the output of the run script.
+cluster.file is the file with the cluster asssignments in the format (word clusterid importance) , same as the output of the run script. Default is cl.
 
-cluster.label.file is a file with the cluster labels given as one label/line
-
-Defaults are cl and cl.lab
-
-You must have [Cherrypy installed] (http://www.cherrypy.org/)
+cluster.label.file is a file with the cluster labels given as one label/line. Default is cl.lab or cluter.file.lab if the first parameter is given.
 
 Then use curl to interact with the service. There are 3 endpoints, all returning JSON objects:
 
