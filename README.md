@@ -30,7 +30,10 @@ sep5 - sample tweets file processed for language and tokenized using the Trendmi
 
 ## Webservice
 
-You must have [Cherrypy installed] (http://www.cherrypy.org/)
+You must have installed [Cherrypy] (http://www.cherrypy.org/) and [numpy] (http://www.numpy.org/). This can be done using:
+
+	easy_install cherrypy
+	easy_install numpy
 
 To run, start first the webservice script:
 
