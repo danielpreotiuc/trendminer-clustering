@@ -41,13 +41,13 @@ To run, start first the webservice script:
 
 cluster.file is the file with the cluster asssignments in the format (word clusterid importance) , same as the output of the run script. Default is cl.
 
-cluster.label.file is a file with the cluster labels given as one label/line. Default is cl.lab or cluter.file.lab if the first parameter is given.
+cluster.label.file is a file with the cluster coherence and labels given as one (coherence label) pair each line. Default is cl.lab or cluster.file.lab if the first parameter is given.
 
 Then use curl to interact with the service. There are 3 endpoints, all returning JSON objects:
 
 #### GET /cluster?c=cid&t=topw
 
-returns the cluster with cid as its label and the top topw words and their importance for the topic.
+returns the cluster with cid as its label, coherence score and the top topw words and their importance for the topic.
 
 #### GET /words?w=word
 

@@ -84,13 +84,16 @@ class Cluster:
   def loadlab(self, labels_file="cl.lab"):
     f=open(labels_file,'r')
     lab={};
+    coh={}
     k=1
     for line in f:
-      l=line.strip()
-      lab[k]=l
+      l=line.strip().split()
+      coh[k]=int(l[0])
+      lab[k]=l[1]
       k=k+1
     f.close()
     self.labels=lab
+    self.coherence=coh
 
   exposed=True
   @cherrypy.tools.json_out()
@@ -105,6 +108,7 @@ class Cluster:
     for (i,k) in cs:
       top["words"][i]=k
     top["label"]=self.labels[int(c)]
+    top["coherence"]=self.coherence[int(c)]
     return top
 
 class Words:
