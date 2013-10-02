@@ -89,7 +89,7 @@ class Cluster:
     for line in f:
       l=line.strip().split()
       coh[k]=int(l[0])
-      lab[k]=l[1]
+      lab[k]=' '.join(l[1:])
       k=k+1
     f.close()
     self.labels=lab
