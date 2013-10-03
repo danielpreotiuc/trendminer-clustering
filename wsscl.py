@@ -2,7 +2,6 @@ import sys
 import cherrypy
 import json
 import pickle
-from collections import Counter
 import numpy as np
 import math
 
