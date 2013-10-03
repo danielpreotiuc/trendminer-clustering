@@ -61,9 +61,9 @@ receives a tweet file, 1 json/line and returns the top notop topics in the file 
 
 	python wsscl.py cl-sora-200w-ncen cl-sora-200-labels
 
-	curl -X GET  http://localhost:8080/cluster?c=199\&t=5
+	curl -X GET  http://localhost:8082/cluster?c=199\&t=5
 	
-	cat mar13 | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8080/topics?t=5
+	cat mar13 | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8082/topics?t=5
 
 ## Scripts
 

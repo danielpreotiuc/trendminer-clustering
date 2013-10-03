@@ -147,7 +147,7 @@ if __name__=='__main__':
   cherrypy.tree.mount(Topics(), '/topics',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
   cherrypy.tree.mount(Cluster(), '/cluster',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
   cherrypy.tree.mount(Words(), '/words',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
-  cherrypy.config.update({'server.socket_port': 8080})
+  cherrypy.config.update({'server.socket_port': 8082, "server.socket_host":"0.0.0.0"})
   cherrypy.engine.start()
   cherrypy.engine.block()
 
