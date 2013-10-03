@@ -11,6 +11,7 @@ class Topics:
   def __init__(self):
     self.stopw=pickle.load(open("stopwords.p","rb"))
     self.loadwords(fcl)
+    self.loadlab(flab)
 
   def loadwords(self, cluster_file):
     f=open(cluster_file,'r')
@@ -28,8 +29,19 @@ class Topics:
     self.words=wo
     self.scores=sc
 
+  def loadlab(self, labels_file="cl.lab"):
+    f=open(labels_file,'r')
+    coh={}
+    k=1
+    for line in f:
+      l=line.strip().split()
+      coh[k]=int(l[0])
+      k=k+1
+    f.close()
+    self.coherence=coh
+
   @cherrypy.tools.json_out()
-  def POST(self,t=10):
+  def POST(self,t=10,coh=3):
     cl=cherrypy.request.headers['Content-Length']
     raw_body=cherrypy.request.body.read(int(cl))
     lines=raw_body.splitlines()
@@ -52,9 +64,10 @@ class Topics:
           try:
             now=now+1
             i=self.words[tok]
-            noc=noc+1
-            lst.append(tok)
-            cls.append(i)
+            if self.coherence[i]>=coh:
+              noc=noc+1
+              lst.append(tok)
+              cls.append(i)
           except:
             pass
       if noc>0:
@@ -147,7 +160,7 @@ if __name__=='__main__':
   cherrypy.tree.mount(Topics(), '/topics',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
   cherrypy.tree.mount(Cluster(), '/cluster',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
   cherrypy.tree.mount(Words(), '/words',{'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()} })
-  cherrypy.config.update({'server.socket_port': 8082, "server.socket_host":"0.0.0.0"})
+  cherrypy.config.update({'server.socket_port': 8080})
   cherrypy.engine.start()
   cherrypy.engine.block()
 
