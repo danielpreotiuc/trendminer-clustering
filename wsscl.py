@@ -31,17 +31,18 @@ class Topics:
 
   def loadlab(self, labels_file="cl.lab"):
     f=open(labels_file,'r')
-    coh={}
+    cohe={}
     k=1
     for line in f:
       l=line.strip().split()
-      coh[k]=int(l[0])
+      cohe[k]=int(l[0])
       k=k+1
     f.close()
-    self.coherence=coh
+    self.coherence=cohe
 
   @cherrypy.tools.json_out()
   def POST(self,t=10,coh=3):
+    ccoh=int(coh)
     cl=cherrypy.request.headers['Content-Length']
     raw_body=cherrypy.request.body.read(int(cl))
     lines=raw_body.splitlines()
@@ -64,7 +65,7 @@ class Topics:
           try:
             now=now+1
             i=self.words[tok]
-            if self.coherence[i]>=coh:
+            if self.coherence[i]>=ccoh:
               noc=noc+1
               lst.append(tok)
               cls.append(i)
@@ -73,10 +74,11 @@ class Topics:
       if noc>0:
         for i in lst:
           s[self.words[i]]=s[self.words[i]]+self.scores[i]
-    sf=s/sum(s)
+    ss=s[1:]
+    sf=ss/sum(ss)
     ts={}
     for i in sorted(range(len(sf)), key=lambda i: sf[i], reverse=True)[:int(t)]:
-      ts[i]=sf[i][0]
+      ts[i+1]=sf[i][0] 
     return ts
 
 class Cluster:
