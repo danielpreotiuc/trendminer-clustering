@@ -80,7 +80,7 @@ Then use curl to interact with the service. There are 3 endpoints, all returning
 
 #### POST /recluster?voct=v\&npmit=n\&knn=kn\&nocl=n\&outf=filename
 
-receives a tweet file to cluster, 1 json/line and tokenised using the Trendminer pipeline and returns a file named 'cl.outf-timestamp' which can be provided as input to the cluster analysis webservice. voct represents the vocabulary threshold, npmit represents the NPMI threshold, knn represents the k value of the k nearest-neighbour graph, nocl represents the number of clusters.
+receives a tweet file to cluster, 1 json/line and tokenised using the Trendminer pipeline and returns a file named 'cl.filename-timestamp' which can be provided as input to the cluster analysis webservice. voct represents the vocabulary threshold, npmit represents the NPMI threshold, knn represents the k value of the k nearest-neighbour graph, nocl represents the number of clusters. The service creates a folder 'filename-timestamp' containing temporary files (such as dictionaries, co-occurence values, etc.).
 
 **Examples:**
 
