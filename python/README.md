@@ -78,15 +78,15 @@ First start the webservice script (runs on port 8088 by default):
 
 Then use curl to interact with the service. There are 3 endpoints, all returning JSON objects:
 
-#### POST /recluster?voct=5\&npmit=0.1\&knn=30\&nocl=100\&outf='tmp'
+#### POST /recluster?voct=v\&npmit=n\&knn=kn\&nocl=n\&outf=filename
 
-receives a tweet file to cluster, 1 json/line and tokenised using the Trendminer pipeline and returns a file named 'cl.outf-timestamp'. voct represents the vocabulary threshold, npmit represents the NPMI threshold, knn represents the k value of the k nearest-neighbour graph, nocl represents the number of clusters.
+receives a tweet file to cluster, 1 json/line and tokenised using the Trendminer pipeline and returns a file named 'cl.outf-timestamp' which can be provided as input to the cluster analysis webservice. voct represents the vocabulary threshold, npmit represents the NPMI threshold, knn represents the k value of the k nearest-neighbour graph, nocl represents the number of clusters.
 
 **Examples:**
 
         python wsrecl.py
 
-        cat mar13 | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8088/recluster
+        cat mar13 | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8088/recluster?voct=5\&npmit=0.1\&knn=30\&nocl=100\&outf='tmp'
 
 ## Scripts
 
