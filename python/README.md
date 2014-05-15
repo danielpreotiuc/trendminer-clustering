@@ -1,23 +1,24 @@
 # Trendminer python clustering repo
 
-This is a pure python port of [Trendminer matlab clustering] (https://github.com/danielpreotiuc/trendminer-clustering)
+This is a pure python port of [Trendminer matlab clustering] (https://github.com/danielpreotiuc/trendminer-clustering).
+
 ## Description
 
-Spectral clustering work done for D3.2.1 of the [Trendminer project] (http://www.trendminer-project.eu/). This builds hard clusters of words that co-occur in the same tweets. More information about the algorithm is available in the [deliverable] (http://www.trendminer-project.eu/).
+Spectral clustering work done for D3.2.1 of the [Trendminer project] (http://www.trendminer-project.eu/). This builds hard clusters of words that co-occur in the same tweets. More information about the algorithm is available in the [D3.2.1 deliverable] (http://www.trendminer-project.eu/images/d3.2.1.pdf).
 
 ## Installation
 
-First install all the requirements using pip
+First install all the requirements using pip:
 
-	pip install -r requirments.txt
+	pip install -r requirements.txt
 
-The project requires pylab (numpy, scipy etc.), cherrypy and sckit-learn
+The project requires pylab (numpy, scipy etc.), cherrypy and scikit-learn
 
-The code is available as a collection of Python scripts. You need to have both installed. The script that performs the entire sequence of operations is written in shell and tested under Ubuntu.
+The code is available as a collection of Python scripts. The entire sequence of operations is written in shell and tested under Ubuntu.
 
 ## Quick start
 
-	./run file voc.threshold npmi.threshold k no.clusters
+	./run.sh file voc.threshold npmi.threshold k no.clusters
 
 file - input file of tweets. One tweet in Json format per line.  This must be preprocessed using the [Trendminer Preprocessing pipeline] (https://github.com/sinjax/trendminer-java), needing tokenisation.
 
@@ -35,9 +36,13 @@ no.clusters - number of clusters
 
 sep5 - sample tweets file processed for language and tokenized using the Trendminer pipeline. Fields are restricted to only text due for privacy. It largely consists of tweets written on 5 September 2013 in Austria, filtered for german and relating to politics.
 
-## Webservice
+## Webservices
 
-To run, start first the webservice script:
+There are two different webservices:
+
+### Cluster analysis
+
+First start the webservice script (runs on port 8080 by default):
 
 	python wsscl.py cluster.file cluster.label.file
 
@@ -66,6 +71,24 @@ receives a tweet file, 1 json/line and returns the top notop topics in the file 
 	curl -X GET  http://localhost:8080/cluster?c=199\&t=5
 	
 	cat mar13 | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8080/topics?t=5
+
+### Reclustering
+
+First start the webservice script (runs on port 8088 by default):
+
+        python wsrecl.py 
+
+Then use curl to interact with the service. There are 3 endpoints, all returning JSON objects:
+
+#### POST /recluster?voct=5\&npmit=0.1\&knn=30\&nocl=100\&outf='tmp'
+
+receives a tweet file to cluster, 1 json/line and tokenised using the Trendminer pipeline and returns a file named 'cl.outf-timestamp'. voct represents the vocabulary threshold, npmit represents the NPMI threshold, knn represents the k value of the k nearest-neighbour graph, nocl represents the number of clusters.
+
+**Examples:**
+
+        python wsrecl.py
+
+        cat mar13 | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8088/recluster
 
 ## Scripts
 
@@ -132,3 +155,9 @@ Makes an NPMI file symmetric.
 Performs spectral clustering using the tweet file, npmi file, dictionary.  K and no.clusters are parameters of the spectral clustering algorithm.
 
 Spectral clustering is currently performed using the code from the [Scikit-Learn] (http://scikit-learn.org/).
+
+## Reference
+
+[Clustering models for discovery of regional and demographic variation](http://www.trendminer-project.eu/images/d3.2.1.pdf)
+Daniel Preotiuc-Pietro, Sina Samangooei, Vasileios Lampos, Trevor Cohn, Nicholas Gibbins, Mahesan Niranjan
+Public Deliverable for Trendminer Project, 2013.
