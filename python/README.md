@@ -1,6 +1,4 @@
-# Trendminer python clustering repo
-
-This is a pure python port of [Trendminer matlab clustering] (https://github.com/danielpreotiuc/trendminer-clustering).
+# Trendminer Python spectral clustering
 
 ## Description
 
