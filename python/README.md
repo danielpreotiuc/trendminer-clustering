@@ -12,27 +12,7 @@ First install all the requirements using pip:
 
 The project requires pylab (numpy, scipy etc.), cherrypy and scikit-learn
 
-The code is available as a collection of Python scripts. The entire sequence of operations is written in shell and tested under Ubuntu.
-
-## Quick start
-
-	./run.sh file voc.threshold npmi.threshold k no.clusters
-
-file - input file of tweets. One tweet in Json format per line.  This must be preprocessed using the [Trendminer Preprocessing pipeline] (https://github.com/sinjax/trendminer-java), needing tokenisation.
-
-voc.threshold - vocabulary cut-off
-
-npmi.threshold - NPMI cut-off
-
-k - k of the mutual K nearest-neighbour graph for spectral clustering
-
-no.clusters - number of clusters 
-
-**Example:**
-	
-	./run.sh sep5 1 0.1 30 30
-
-sep5 - sample tweets file processed for language and tokenized using the Trendminer pipeline. Fields are restricted to only text due for privacy. It largely consists of tweets written on 5 September 2013 in Austria, filtered for german and relating to politics.
+The code is available as a collection of Python scripts. The code was tested under Ubuntu.
 
 ## Webservices
 
@@ -80,17 +60,41 @@ Then use curl to interact with the service. There are 3 endpoints, all returning
 
 #### POST /recluster?voct=v\&npmit=n\&knn=kn\&nocl=n\&outf=filename
 
-receives a tweet file to cluster, 1 json/line and tokenised using the Trendminer pipeline and returns a file named 'cl.filename-timestamp' which can be provided as input to the cluster analysis webservice. voct represents the vocabulary threshold, npmit represents the NPMI threshold, knn represents the k value of the k nearest-neighbour graph, nocl represents the number of clusters. The service creates a folder 'filename-timestamp' containing temporary files (such as dictionaries, co-occurence values, etc.).
+receives a tweet file to cluster and creates a file named 'cl.outf-timestamp-nocl' which can be provided as input to the cluster analysis webservice. voct represents the vocabulary threshold, npmit represents the NPMI threshold, knn represents the k value of the k nearest-neighbour graph, nocl represents the number of clusters. The service also creates a folder 'filename-timestamp' containing temporary files (such as dictionaries, co-occurence values, etc.).
+
+The input tweet file contains one tweet in Json format per line.  This must be preprocessed using the [Trendminer Preprocessing pipeline] (https://github.com/sinjax/trendminer-java), needing tokenisation.
 
 **Examples:**
 
         python wsrecl.py
 
-        cat mar13 | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8088/recluster?voct=5\&npmit=0.1\&knn=30\&nocl=100\&outf='tmp'
+        cat mar13 | curl -i -k -H "Content-Type: application/json" -H "Accept: application/json" -X POST --data-binary @- http://localhost:8088/recluster?voct=5\&npmit=0.1\&knn=30\&nocl=100\&outf=tmp
 
 ## Scripts
 
-This is a description of each script. They are all needed to be ran in the order given by the run.sh script but can also be useful individually.
+This is a description of each script used by the webservices. They are all ran in the order given by the run.sh script but can also be useful individually.
+
+#### run.sh
+
+Performs the clustering on a file
+
+	./run.sh file voc.threshold npmi.threshold k no.clusters
+
+file - input file of tweets. One tweet in Json format per line.  This must be preprocessed using the [Trendminer Preprocessing pipeline] (https://github.com/sinjax/trendminer-java), needing tokenisation.
+
+voc.threshold - vocabulary cut-off
+
+npmi.threshold - NPMI cut-off
+
+k - k of the mutual K nearest-neighbour graph for spectral clustering
+
+no.clusters - number of clusters
+
+**Example:**
+
+        ./run.sh sep5 1 0.1 30 30
+
+sep5 - sample tweets file processed for language and tokenized using the Trendminer pipeline. Fields are restricted to only text due for privacy. It largely consists of tweets written on 5 September 2013 in Austria, filtered for german and relating to politics
 
 #### dedup.py
 
